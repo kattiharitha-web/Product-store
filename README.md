@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Product Explorer
 
 A React application that displays products from the [Fake Store API](https://fakestoreapi.com/).
@@ -23,3 +24,6 @@ npm run dev
 - React Router
 - Vite
 - Fake Store API
+=======
+# Product-store
+>>>>>>> 38e2d0404a4b8cf377e6f17f6d2eedbc2e1a0823

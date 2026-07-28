@@ -1,22 +1,43 @@
-const API_BASE_URL = 'https://fakestoreapi.com/products'
+import { API_BASE_URL } from '../constants/app'
 
-async function fetchProducts(url, fallbackMessage) {
-  const response = await fetch(url)
+const requestMessages = {
+  network: "We couldn't reach the store. Check your connection and try again.",
+  productsLoad: 'Unable to load products. Please try again.',
+  productNotFound: 'Product not found.',
+  invalidProductId: 'Invalid product ID',
+}
+
+async function fetchProducts(url, fallbackMessage, signal) {
+  let response
+
+  try {
+    response = await fetch(url, { signal })
+  } catch (error) {
+    if (error.name === 'AbortError') throw error
+    throw new Error(requestMessages.network)
+  }
 
   if (!response.ok) {
     throw new Error(fallbackMessage)
   }
 
-  return response.json()
-}
-
-export function getAllProducts() {
-  return fetchProducts(API_BASE_URL, 'Unable to load products. Please try again.')
-}
-
-export async function getProductById(id) {
-  if (!id || isNaN(Number(id))) {
-    throw new Error('Invalid product ID')
+  try {
+    return await response.json()
+  } catch {
+    throw new Error(fallbackMessage)
   }
-  return fetchProducts(`${API_BASE_URL}/${id}`, 'Product not found.')
+}
+
+export function getAllProducts(signal) {
+  return fetchProducts(API_BASE_URL, requestMessages.productsLoad, signal)
+}
+
+export async function getProductById(id, signal) {
+  const productId = Number(id)
+
+  if (!Number.isSafeInteger(productId) || productId <= 0) {
+    throw new Error(requestMessages.invalidProductId)
+  }
+
+  return fetchProducts(`${API_BASE_URL}/${productId}`, requestMessages.productNotFound, signal)
 }

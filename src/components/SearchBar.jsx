@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 export default function SearchBar({ onSearch }) {
   const [value, setValue] = useState('')
   const [touched, setTouched] = useState(false)
+  const inputRef = useRef(null)
 
   function handleChange(e) {
     const next = e.target.value
@@ -14,6 +15,7 @@ export default function SearchBar({ onSearch }) {
     setValue('')
     onSearch('')
     setTouched(false)
+    inputRef.current?.focus()
   }
 
   const isEmpty = touched && value.trim().length === 0
@@ -26,6 +28,7 @@ export default function SearchBar({ onSearch }) {
       <div className="search-bar__row">
         <input
           id="product-search"
+          ref={inputRef}
           type="text"
           value={value}
           placeholder="Search by product name..."
@@ -40,7 +43,7 @@ export default function SearchBar({ onSearch }) {
         )}
       </div>
       {isEmpty && (
-        <p id="search-hint" className="search-bar__hint">
+        <p id="search-hint" className="search-bar__hint" role="status">
           Showing all products. Type a name to filter.
         </p>
       )}

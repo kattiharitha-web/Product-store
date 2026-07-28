@@ -1,28 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
+import EmailValidationForm from '../components/EmailValidationForm'
+import PageState from '../components/PageState'
 import ProductCard from '../components/ProductCard'
 import SearchBar from '../components/SearchBar'
+import useAsync from '../hooks/useAsync'
 import { getAllProducts } from '../services/productService'
 
 export default function ProductListPage() {
-  const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
   const [query, setQuery] = useState('')
-
-  useEffect(() => {
-    async function loadProducts() {
-      try {
-        const productList = await getAllProducts()
-        setProducts(productList)
-      } catch (error) {
-        setError(error.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadProducts()
-  }, [])
+  const loadProducts = useCallback((signal) => getAllProducts(signal), [])
+  const { data, loading, error, retry } = useAsync(loadProducts)
+  const products = Array.isArray(data) ? data : []
 
   const keywords = query.toLowerCase().trim().split(/\s+/).filter(Boolean)
   const filteredProducts = products.filter((product) => {
@@ -40,19 +28,17 @@ export default function ProductListPage() {
       <SearchBar onSearch={setQuery} />
 
       {loading ? (
-        <p className="results-count">Loading products...</p>
+        <PageState type="loading" message="Loading products..." />
       ) : error ? (
-        <div className="empty-state" role="alert">
-          <p>{error}</p>
-        </div>
+        <PageState type="error" message={error} onRetry={retry} />
       ) : (
         <>
-          <p className="results-count">
+          <p className="results-count" role="status" aria-live="polite">
             {filteredProducts.length} product{filteredProducts.length === 1 ? '' : 's'} found
             {query && ` matching "${query}"`}
           </p>
           {filteredProducts.length === 0 ? (
-            <div className="empty-state" role="status">
+            <div className="empty-state">
               <p>No products found. Try adjusting your search.</p>
             </div>
           ) : (
@@ -64,6 +50,7 @@ export default function ProductListPage() {
           )}
         </>
       )}
+      <EmailValidationForm />
     </main>
   )
 }

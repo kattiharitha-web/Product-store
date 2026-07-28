@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
+import { ROUTES } from '../constants/app'
+import { formatCurrency } from '../utils/formatCurrency'
 
 export default function ProductCard({ product }) {
   return (
     <Link
-      to={`/product/${product.id}`}
+      to={ROUTES.product(product.id)}
       className="product-card"
       aria-label={`View details for ${product.title}`}
     >
@@ -13,7 +15,7 @@ export default function ProductCard({ product }) {
       <div className="product-card__body">
         <p className="product-card__category">{product.category}</p>
         <h3 className="product-card__title">{product.title}</h3>
-        <p className="product-card__price">${product.price.toFixed(2)}</p>
+        <p className="product-card__price">{formatCurrency(product.price)}</p>
       </div>
     </Link>
   )

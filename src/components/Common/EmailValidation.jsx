@@ -1,27 +1,14 @@
 import { useState } from 'react'
+import { emailValidationMessages, validateEmail } from '../../utils/validation'
+import './EmailValidation.css'
 
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const formMessages = {
-  required: 'Email is required.',
-  invalid: 'Please enter a valid email address.',
-  success: 'Email format is valid. This demo does not store your email.',
-}
-
-function validateEmail(value) {
-  const email = value.trim()
-
-  if (!email) return formMessages.required
-  if (!emailPattern.test(email)) return formMessages.invalid
-  return ''
-}
-
-export default function EmailValidationForm() {
+export default function EmailValidation() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
 
-  function handleChange(event) {
-    const nextEmail = event.target.value
+  function handleChange({ target }) {
+    const nextEmail = target?.value ?? ''
 
     setEmail(nextEmail)
     setSuccessMessage('')
@@ -48,19 +35,19 @@ export default function EmailValidationForm() {
     }
 
     setError('')
-    setSuccessMessage(formMessages.success)
+    setSuccessMessage(emailValidationMessages.success)
   }
 
   return (
-    <section className="email-validation" aria-labelledby="email-validation-title">
+    <section className="emailValidation" aria-labelledby="email-validation-title">
       <div>
-        <p className="eyebrow">Form validation</p>
+        <p className="emailValidationEyebrow">Form validation</p>
         <h2 id="email-validation-title">Validate your email</h2>
-        <p>Enter an email address to test client-side validation.</p>
+        <p className="emailValidationDescription">Enter an email address to test client-side validation.</p>
       </div>
       <form noValidate onSubmit={handleSubmit}>
-        <label className="sr-only" htmlFor="email">Email address</label>
-        <div className="email-validation__row">
+        <label className="emailValidationSrOnly" htmlFor="email">Email address</label>
+        <div className="emailValidationRow">
           <input
             id="email"
             type="email"
@@ -73,18 +60,14 @@ export default function EmailValidationForm() {
             aria-invalid={Boolean(error)}
             aria-describedby={error ? 'email-error' : successMessage ? 'email-success' : undefined}
           />
-          <button className="button" type="submit">Validate email</button>
+          <button className="emailValidationButton" type="submit">Validate email</button>
         </div>
         {error && (
-          <p
-            id="email-error"
-            className="form-message form-message--error"
-            role="alert"
-          >
+          <p id="email-error" className="emailValidationMessage emailValidationErrorMessage" role="alert">
             {error}
           </p>
         )}
-        {successMessage && <p id="email-success" className="form-message" role="status">{successMessage}</p>}
+        {successMessage && <p id="email-success" className="emailValidationMessage" role="status">{successMessage}</p>}
       </form>
     </section>
   )

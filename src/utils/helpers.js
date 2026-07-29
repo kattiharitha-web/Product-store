@@ -4,5 +4,6 @@ const usdFormatter = new Intl.NumberFormat('en-US', {
 })
 
 export function formatCurrency(value) {
-  return usdFormatter.format(value)
+  const amount = Number(value)
+  return Number.isFinite(amount) ? usdFormatter.format(amount) : 'Price unavailable'
 }

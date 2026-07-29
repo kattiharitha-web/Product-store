@@ -1,0 +1,7 @@
+.searchBar { max-width: 680px; margin: 34px 0 20px; }
+.searchBarLabel { display: block; margin-bottom: 6px; color: var(--color-muted); font-size: 0.85rem; }
+.searchBarRow { display: flex; gap: 8px; }
+.searchBarRow input { flex: 1; min-width: 0; padding: 14px 16px; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-surface); font-size: 1rem; }
+.searchBarRow input:focus-visible, .searchBarClear:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+.searchBarClear { padding: 0 14px; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-surface); }
+.searchBarHint { margin-top: 4px; color: var(--color-muted); font-size: 0.8rem; }

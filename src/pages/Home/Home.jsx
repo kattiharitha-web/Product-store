@@ -1,0 +1,91 @@
+import { useMemo, useState } from 'react'
+import Pagination from '../../components/Pagination/Pagination'
+import ProductCard from '../../components/ProductCard/ProductCard'
+import SearchBar from '../../components/SearchBar/SearchBar'
+import EmailValidation from '../../components/Common/EmailValidation'
+import PageState from '../../components/Common/PageState'
+import { PRODUCTS_PER_PAGE } from '../../utils/constants'
+import { useProducts } from '../../hooks/useProducts'
+import './Home.css'
+
+function getSearchableText(product) {
+  const title = typeof product?.title === 'string' ? product.title : ''
+  const category = typeof product?.category === 'string' ? product.category : ''
+
+  return `${title} ${category}`.toLowerCase()
+}
+
+export default function Home() {
+  const [query, setQuery] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const { products, loading, error, retry } = useProducts()
+
+  const keywords = useMemo(
+    () => query.toLowerCase().trim().split(/\s+/).filter(Boolean),
+    [query],
+  )
+  const filteredProducts = useMemo(
+    () => products.filter((product) => keywords.every((keyword) => getSearchableText(product).includes(keyword))),
+    [keywords, products],
+  )
+  const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE)
+  const currentProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE
+    return filteredProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE)
+  }, [currentPage, filteredProducts])
+
+  function handleSearch(nextQuery) {
+    setQuery(nextQuery ?? '')
+    setCurrentPage(1)
+  }
+
+  const firstProductNumber = filteredProducts.length ? (currentPage - 1) * PRODUCTS_PER_PAGE + 1 : 0
+  const lastProductNumber = Math.min(currentPage * PRODUCTS_PER_PAGE, filteredProducts.length)
+
+  return (
+    <main id="main-content" className="homePage" tabIndex="-1" aria-busy={loading}>
+      <div className="homePageHeader">
+        <h1>Browse Products</h1>
+        <p className="homePageSubtitle">Search products by name or category.</p>
+      </div>
+
+      <SearchBar onSearch={handleSearch} />
+
+      {loading ? (
+        <PageState type="loading" message="Loading products..." />
+      ) : error ? (
+        <PageState type="error" message={error} onRetry={retry} />
+      ) : (
+        <>
+          <p className="homePageResultsCount" role="status" aria-live="polite">
+            {filteredProducts.length === 0
+              ? 'No products found'
+              : `Showing ${firstProductNumber}\u2013${lastProductNumber} of ${filteredProducts.length} product${filteredProducts.length === 1 ? '' : 's'}`}
+            {query.trim() && ` matching "${query.trim()}"`}
+          </p>
+
+          {filteredProducts.length === 0 ? (
+            <div className="homePageEmptyState" role="status">
+              <p>No products found. Try adjusting your search.</p>
+            </div>
+          ) : (
+            <>
+              <div className="homePageProductGrid">
+                {currentProducts.map((product) => (
+                  <ProductCard key={product?.id} product={product} />
+                ))}
+              </div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </>
+          )}
+        </>
+      )}
+
+      <EmailValidation />
+    </main>
+  )
+}

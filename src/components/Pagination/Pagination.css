@@ -1,0 +1,7 @@
+.pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 32px; }
+.paginationPages { display: flex; gap: 6px; }
+.paginationButton { min-width: 40px; min-height: 40px; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-surface); color: var(--color-accent); font-weight: 600; }
+.paginationButton:hover:not(:disabled), .paginationButton:focus-visible { border-color: var(--color-accent); outline: 2px solid var(--color-accent); outline-offset: 1px; }
+.paginationButton:disabled { cursor: not-allowed; opacity: 0.5; }
+.paginationCurrentPage { border-color: var(--color-accent); background: var(--color-accent); color: #fff; }
+@media (max-width: 520px) { .pagination { gap: 4px; } .paginationButton { min-width: 36px; padding: 8px; } }

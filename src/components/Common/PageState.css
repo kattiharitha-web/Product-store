@@ -1,0 +1,7 @@
+.pageState { display: grid; min-height: 180px; place-items: center; align-content: center; gap: 12px; color: var(--color-muted); text-align: center; }
+.pageState p { margin: 0; }
+.pageStateError { border: 1px dashed #d6c3ba; border-radius: var(--radius); background: #fffaf7; }
+.pageStateSpinner { width: 26px; height: 26px; border: 3px solid var(--color-border); border-top-color: var(--color-accent); border-radius: 50%; animation: pageStateSpin 0.75s linear infinite; }
+.pageStateRetryButton { padding: 12px 17px; border: 1px solid var(--color-accent); border-radius: 10px; background: transparent; color: var(--color-accent); font-size: 0.9rem; font-weight: 600; }
+.pageStateRetryButton:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+@keyframes pageStateSpin { to { transform: rotate(360deg); } }

@@ -1,0 +1,12 @@
+.emailValidation { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, 0.9fr); gap: 40px; align-items: center; margin: 64px auto 0; padding: 36px; border-radius: var(--radius); background: #e7eee8; }
+.emailValidationEyebrow { margin: 0 0 12px; color: var(--color-accent); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; }
+.emailValidation h2 { margin: 0 0 10px; font-family: Georgia, serif; font-size: clamp(1.7rem, 3vw, 2.35rem); letter-spacing: -0.035em; line-height: 1.1; }
+.emailValidationDescription { margin: 0; color: var(--color-muted); line-height: 1.55; }
+.emailValidationSrOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.emailValidationRow { display: flex; gap: 8px; }
+.emailValidationRow input { min-width: 0; flex: 1; padding: 12px 14px; border: 1px solid #c8d6ca; border-radius: 10px; background: #fff; }
+.emailValidationButton { padding: 12px 17px; border: 1px solid var(--color-accent); border-radius: 10px; background: var(--color-accent); color: #fff; font-size: 0.9rem; font-weight: 600; }
+.emailValidationButton:focus-visible, .emailValidationRow input:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+.emailValidationMessage { min-height: 1.4em; margin: 9px 0 0; color: var(--color-accent); font-size: 0.84rem; }
+.emailValidationErrorMessage { color: #a54127; }
+@media (max-width: 520px) { .emailValidation { grid-template-columns: 1fr; gap: 24px; margin-top: 40px; padding: 26px 20px; } .emailValidationRow { flex-direction: column; } }

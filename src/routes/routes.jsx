@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
-import PageState from '../components/Common/PageState'
+import PageState from '../components/Common/PageState/PageState'
 import Footer from '../components/Footer/Footer'
 import Header from '../components/Header/Header'
 
@@ -10,12 +10,12 @@ export const ROUTES = {
   product: (id) => `/product/${id}`,
 }
 
-const Home = lazy(() => import('../pages/Home/Home'))
+const ProductList = lazy(() => import('../pages/ProductList/ProductList'))
 const ProductDetails = lazy(() => import('../pages/ProductDetails/ProductDetails'))
 const NotFound = lazy(() => import('../pages/NotFound/NotFound'))
 
 export const routeConfig = [
-  { index: true, Component: Home },
+  { index: true, Component: ProductList },
   { path: ROUTES.productDetail, Component: ProductDetails },
   { path: '*', Component: NotFound },
 ]

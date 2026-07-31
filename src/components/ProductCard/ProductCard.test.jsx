@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import ProductCard from './ProductCard'
@@ -32,6 +32,18 @@ describe('ProductCard', () => {
     )
 
     expect(screen.getByRole('link', { name: 'View details for Untitled product' })).toHaveAttribute('href', '/')
+    expect(screen.getByText('Image unavailable')).toBeInTheDocument()
+  })
+
+  it('shows the fallback when an image fails to load', () => {
+    render(
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <ProductCard product={product} />
+      </MemoryRouter>,
+    )
+
+    fireEvent.error(screen.getByRole('img', { name: 'Classic Jacket' }))
+
     expect(screen.getByText('Image unavailable')).toBeInTheDocument()
   })
 })

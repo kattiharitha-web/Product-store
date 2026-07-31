@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import PageState from '../../components/Common/PageState'
+import AsyncState from '../../components/Common/AsyncState/AsyncState'
 import { ROUTES } from '../../routes/routes'
 import { useProduct } from '../../hooks/useProducts'
 import { formatCurrency } from '../../utils/helpers'
@@ -15,39 +16,50 @@ export default function ProductDetails() {
     ? description
     : 'No description is available for this product.'
   const hasImage = typeof image === 'string' && image.trim()
+  const [failedImage, setFailedImage] = useState(null)
+  let pageContent
+
+  if (product) {
+    pageContent = (
+      <article className="productDetailsCard">
+        <div className="productDetailsImageWrap">
+          {hasImage && failedImage !== image ? (
+            <img src={image} alt={safeTitle} decoding="async" onError={() => setFailedImage(image)} />
+          ) : (
+            <span className="productDetailsImageFallback">Image unavailable</span>
+          )}
+        </div>
+        <div className="productDetailsBody">
+          <p className="productDetailsCategory">{safeCategory}</p>
+          <h1>{safeTitle}</h1>
+          <p className="productDetailsPrice">{formatCurrency(price)}</p>
+          <p className="productDetailsDescription">{safeDescription}</p>
+        </div>
+      </article>
+    )
+  } else {
+    pageContent = (
+      <div className="emptyState" role="status">
+        <p>Product not found.</p>
+        <Link to={ROUTES.home} className="productDetailsBackLink">Return to products</Link>
+      </div>
+    )
+  }
 
   return (
-    <main id="main-content" className="productDetailsPage" tabIndex="-1" aria-busy={loading}>
+    <main id="main-content" className="pageContainer productDetailsPage" tabIndex="-1" aria-busy={loading}>
       <Link to={ROUTES.home} className="productDetailsBackLink">
         &larr; Back to products
       </Link>
 
-      {loading ? (
-        <PageState type="loading" message="Loading product details..." />
-      ) : error ? (
-        <PageState type="error" message={error} onRetry={retry} />
-      ) : product ? (
-        <article className="productDetailsCard">
-          <div className="productDetailsImageWrap">
-            {hasImage ? (
-              <img src={image} alt={safeTitle} decoding="async" />
-            ) : (
-              <span className="productDetailsImageFallback">Image unavailable</span>
-            )}
-          </div>
-          <div className="productDetailsBody">
-            <p className="productDetailsCategory">{safeCategory}</p>
-            <h1>{safeTitle}</h1>
-            <p className="productDetailsPrice">{formatCurrency(price)}</p>
-            <p className="productDetailsDescription">{safeDescription}</p>
-          </div>
-        </article>
-      ) : (
-        <div className="productDetailsEmptyState" role="status">
-          <p>Product not found.</p>
-          <Link to={ROUTES.home} className="productDetailsBackLink">Return to products</Link>
-        </div>
-      )}
+      <AsyncState
+        loading={loading}
+        error={error}
+        retry={retry}
+        loadingMessage="Loading product details..."
+      >
+        {pageContent}
+      </AsyncState>
     </main>
   )
 }

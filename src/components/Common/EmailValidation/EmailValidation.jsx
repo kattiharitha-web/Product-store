@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { emailValidationMessages, validateEmail } from '../../utils/validation'
+import { emailValidationMessages, validateEmail } from '../../../utils/validation'
 import './EmailValidation.css'
 
 export default function EmailValidation() {

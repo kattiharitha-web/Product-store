@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, vi } from 'vitest'
-import Home from './Home'
+import ProductList from './ProductList'
 import { useProducts } from '../../hooks/useProducts'
 
 vi.mock('../../hooks/useProducts', () => ({
@@ -18,7 +18,7 @@ const products = Array.from({ length: 11 }, (_, index) => ({
   price: index + 1,
 }))
 
-describe('Home', () => {
+describe('ProductList', () => {
   it('shows ten products per page and displays the remaining item on the next page', async () => {
     vi.mocked(useProducts).mockReturnValue({
       products,
@@ -30,7 +30,7 @@ describe('Home', () => {
 
     render(
       <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <Home />
+        <ProductList />
       </MemoryRouter>,
     )
 

@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { getAllProducts, getProductById } from '../services/api'
+import { isAbortError } from '../utils/helpers'
 
 const defaultErrorMessage = 'Something went wrong. Please try again.'
-
-function isAbortError(error) {
-  return error?.name === 'AbortError'
-}
 
 function getErrorMessage(error) {
   const message = error?.message

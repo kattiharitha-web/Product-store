@@ -1,71 +1,106 @@
 # Product Explorer
 
-A React application that displays products from the [Fake Store API](https://fakestoreapi.com/).
+A responsive React single-page application for browsing products from the [Fake Store API](https://fakestoreapi.com/). It demonstrates a maintainable component structure, resilient asynchronous UI states, accessible interactions, and automated test coverage.
 
-## Features
+## Highlights
 
-- Product listing page
-- Product detail page
-- Search by product name or category
-- Responsive layout for desktop, tablet, and mobile
-- Ten products per page with Previous, Next, and page controls
-- Loading, empty, retryable error, invalid-ID, and not-found states
-- Basic client-side email form validation
-- Lazy-loaded pages and lazy-loaded product images
+- Browse a paginated product catalogue with ten products per page.
+- Search products by title and category using multi-word matching.
+- Open a product detail page with category, price, description, and image.
+- Handle loading, empty, invalid-ID, not-found, network-error, and retry states.
+- Show a graceful fallback when a product image is missing or fails to load.
+- Validate an email address client-side with accessible feedback.
+- Use lazy-loaded routes and lazy-loaded catalogue images to reduce initial work.
+- Provide a responsive layout and a dedicated 404 page.
 
-## Project structure
+## Architecture
 
 ```text
 src/
-├── components/
-│   ├── Common/
-│   ├── Footer/
-│   ├── Header/
-│   ├── Pagination/
-│   ├── ProductCard/
-│   └── SearchBar/
-├── hooks/
-├── pages/
-├── routes/
-├── services/
-├── styles/
-└── utils/
+|-- components/       # Reusable UI components
+|   |-- Common/       # Shared async and page-state UI
+|   |-- Pagination/
+|   |-- ProductCard/
+|   `-- SearchBar/
+|-- hooks/            # Product-fetching hooks and request lifecycle logic
+|-- pages/            # Product list, detail, and not-found pages
+|-- routes/           # Route definitions and application layout
+|-- services/         # Fake Store API client and response validation
+|-- styles/           # Global design tokens and shared styles
+`-- utils/            # Constants, formatting, and validation helpers
 ```
+
+### Data flow
+
+`Page -> useProducts/useProduct -> API service -> Fake Store API`
+
+The request hook owns loading, error, retry, and cancellation behaviour. `AsyncState` then maps that state to consistent loading or error UI, keeping page components focused on their success content.
 
 ## Accessibility
 
-- Semantic headings, `main`, `header`, `footer`, and pagination `nav`
-- Accessible labels for search and email inputs
-- Descriptive image alternative text and lazy image loading
-- Announced loading, success, and error states
-- Keyboard-visible focus styles and accessible buttons
+- Semantic landmarks, headings, navigation, and form labels.
+- A skip link for keyboard users.
+- Keyboard-visible focus states and accessible buttons.
+- Descriptive alternative text and an image-unavailable fallback.
+- Live announcements for loading, search results, form success, and errors.
+- Correct pagination semantics with `aria-current`.
 
-## Day 15 quality checks
+## Performance considerations
 
-- 20 automated tests cover validation, API error handling, routing, product states, search, pagination, and the Home page's ten-item pagination.
-- The UI uses accessible landmarks, labelled inputs, descriptive image text, keyboard focus styles, and announced loading/error feedback.
-- Run `npm run test` and `npm run build` before submitting changes.
+- Route-level code splitting through `React.lazy` and `Suspense`.
+- Native image lazy loading for product cards below the fold.
+- Memoized search keywords, filtering, and paginated result slices.
+- Request cancellation with `AbortController` to avoid stale state updates during navigation.
 
-## Run locally
-
-```bash
-npm install
-npm run dev
-```
-
-## Verify the project
-
-```bash
-npm run test
-npm run build
-```
-
-In PowerShell, use `npm.cmd` instead of `npm` if script execution is disabled.
-
-## Tech used
+## Tech stack
 
 - React
 - React Router
 - Vite
 - Fake Store API
 - Vitest and React Testing Library
+- ESLint
+
+## Getting started
+
+### Prerequisites
+
+- Node.js 20.19 or later
+- npm
+
+### Install and run
+
+```bash
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite in your browser.
+
+> On Windows PowerShell, use `npm.cmd` in place of `npm` if script execution is disabled.
+
+## Available scripts
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Vite development server. |
+| `npm run build` | Create an optimized production build. |
+| `npm run preview` | Preview the production build locally. |
+| `npm run lint` | Run ESLint across the project. |
+| `npm run test` | Run the Vitest test suite once. |
+
+## Quality checks
+
+The test suite covers API responses and errors, routing, async UI states, product cards and details, search, pagination, image fallbacks, and email validation.
+
+Before submitting changes, run:
+
+```bash
+npm run lint
+npm run test
+npm run build
+```
+
+## API note
+
+Product data and images are provided by a third-party demo API. The application validates API responses and presents retryable error states when the service is unavailable.

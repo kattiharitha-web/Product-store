@@ -2,11 +2,11 @@ import { useMemo, useState } from 'react'
 import Pagination from '../../components/Pagination/Pagination'
 import ProductCard from '../../components/ProductCard/ProductCard'
 import SearchBar from '../../components/SearchBar/SearchBar'
-import EmailValidation from '../../components/Common/EmailValidation'
-import PageState from '../../components/Common/PageState'
+import EmailValidation from '../../components/Common/EmailValidation/EmailValidation'
+import AsyncState from '../../components/Common/AsyncState/AsyncState'
 import { PRODUCTS_PER_PAGE } from '../../utils/constants'
 import { useProducts } from '../../hooks/useProducts'
-import './Home.css'
+import './ProductList.css'
 
 function getSearchableText(product) {
   const title = typeof product?.title === 'string' ? product.title : ''
@@ -15,7 +15,7 @@ function getSearchableText(product) {
   return `${title} ${category}`.toLowerCase()
 }
 
-export default function Home() {
+export default function ProductList() {
   const [query, setQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const { products, loading, error, retry } = useProducts()
@@ -41,9 +41,43 @@ export default function Home() {
 
   const firstProductNumber = filteredProducts.length ? (currentPage - 1) * PRODUCTS_PER_PAGE + 1 : 0
   const lastProductNumber = Math.min(currentPage * PRODUCTS_PER_PAGE, filteredProducts.length)
+  let pageContent
+
+  if (filteredProducts.length === 0) {
+    pageContent = (
+      <>
+        <p className="homePageResultsCount" role="status" aria-live="polite">
+          No products found
+          {query.trim() && ` matching "${query.trim()}"`}
+        </p>
+        <div className="emptyState homePageEmptyState" role="status">
+          <p>No products found. Try adjusting your search.</p>
+        </div>
+      </>
+    )
+  } else {
+    pageContent = (
+      <>
+        <p className="homePageResultsCount" role="status" aria-live="polite">
+          {`Showing ${firstProductNumber}\u2013${lastProductNumber} of ${filteredProducts.length} product${filteredProducts.length === 1 ? '' : 's'}`}
+          {query.trim() && ` matching "${query.trim()}"`}
+        </p>
+        <div className="homePageProductGrid">
+          {currentProducts.map((product) => (
+            <ProductCard key={product?.id} product={product} />
+          ))}
+        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </>
+    )
+  }
 
   return (
-    <main id="main-content" className="homePage" tabIndex="-1" aria-busy={loading}>
+    <main id="main-content" className="pageContainer homePage" tabIndex="-1" aria-busy={loading}>
       <div className="homePageHeader">
         <h1>Browse Products</h1>
         <p className="homePageSubtitle">Search products by name or category.</p>
@@ -51,39 +85,14 @@ export default function Home() {
 
       <SearchBar onSearch={handleSearch} />
 
-      {loading ? (
-        <PageState type="loading" message="Loading products..." />
-      ) : error ? (
-        <PageState type="error" message={error} onRetry={retry} />
-      ) : (
-        <>
-          <p className="homePageResultsCount" role="status" aria-live="polite">
-            {filteredProducts.length === 0
-              ? 'No products found'
-              : `Showing ${firstProductNumber}\u2013${lastProductNumber} of ${filteredProducts.length} product${filteredProducts.length === 1 ? '' : 's'}`}
-            {query.trim() && ` matching "${query.trim()}"`}
-          </p>
-
-          {filteredProducts.length === 0 ? (
-            <div className="homePageEmptyState" role="status">
-              <p>No products found. Try adjusting your search.</p>
-            </div>
-          ) : (
-            <>
-              <div className="homePageProductGrid">
-                {currentProducts.map((product) => (
-                  <ProductCard key={product?.id} product={product} />
-                ))}
-              </div>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </>
-          )}
-        </>
-      )}
+      <AsyncState
+        loading={loading}
+        error={error}
+        retry={retry}
+        loadingMessage="Loading products..."
+      >
+        {pageContent}
+      </AsyncState>
 
       <EmailValidation />
     </main>

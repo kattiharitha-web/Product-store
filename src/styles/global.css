@@ -38,6 +38,18 @@ button {
   min-height: 100vh;
 }
 
+.pageContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 16px 72px;
+}
+
+.emptyState {
+  padding: 48px 24px;
+  color: var(--color-muted);
+  text-align: center;
+}
+
 .skipLink {
   position: fixed;
   z-index: 1;
@@ -55,4 +67,10 @@ button {
   transform: translateY(0);
   outline: 2px solid var(--color-text);
   outline-offset: 2px;
+}
+
+@media (max-width: 520px) {
+  .pageContainer {
+    padding-top: 40px;
+  }
 }

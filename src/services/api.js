@@ -1,14 +1,11 @@
 import { API_BASE_URL } from '../utils/constants'
+import { isAbortError } from '../utils/helpers'
 
 export const requestMessages = {
   network: "We couldn't reach the store. Check your connection and try again.",
   productsLoad: 'Unable to load products. Please try again.',
   productNotFound: 'Product not found.',
   invalidProductId: 'Invalid product ID.',
-}
-
-function isAbortError(error) {
-  return error?.name === 'AbortError'
 }
 
 function isProduct(value) {

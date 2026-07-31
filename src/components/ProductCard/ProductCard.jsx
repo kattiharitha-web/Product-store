@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ROUTES } from '../../routes/routes'
 import { formatCurrency } from '../../utils/helpers'
@@ -8,6 +9,7 @@ export default function ProductCard({ product }) {
   const safeTitle = typeof title === 'string' && title.trim() ? title : 'Untitled product'
   const safeCategory = typeof category === 'string' && category.trim() ? category : 'Uncategorized'
   const hasImage = typeof image === 'string' && image.trim()
+  const [failedImage, setFailedImage] = useState(null)
   const productId = Number(id)
   const productPath = Number.isSafeInteger(productId) && productId > 0
     ? ROUTES.product(productId)
@@ -20,8 +22,14 @@ export default function ProductCard({ product }) {
       aria-label={`View details for ${safeTitle}`}
     >
       <div className="productCardImageWrap">
-        {hasImage ? (
-          <img src={image} alt={safeTitle} loading="lazy" decoding="async" />
+        {hasImage && failedImage !== image ? (
+          <img
+            src={image}
+            alt={safeTitle}
+            loading="lazy"
+            decoding="async"
+            onError={() => setFailedImage(image)}
+          />
         ) : (
           <span className="productCardImageFallback">Image unavailable</span>
         )}

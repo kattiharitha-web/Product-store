@@ -38,4 +38,15 @@ describe('AsyncState', () => {
 
     expect(screen.getByText('Product content')).toBeInTheDocument()
   })
+
+  it('renders a supplied loading fallback', () => {
+    render(
+      <AsyncState loading loadingFallback={<p>Product skeleton</p>}>
+        <p>Product content</p>
+      </AsyncState>,
+    )
+
+    expect(screen.getByText('Product skeleton')).toBeInTheDocument()
+    expect(screen.queryByText('Product content')).not.toBeInTheDocument()
+  })
 })

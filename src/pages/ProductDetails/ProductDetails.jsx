@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import AsyncState from '../../components/Common/AsyncState/AsyncState'
+import { ProductDetailsSkeleton } from '../../components/Common/ContentSkeleton/ContentSkeleton'
 import { ROUTES } from '../../routes/routes'
 import { useProduct } from '../../hooks/useProducts'
 import { formatCurrency } from '../../utils/helpers'
@@ -57,6 +58,7 @@ export default function ProductDetails() {
         error={error}
         retry={retry}
         loadingMessage="Loading product details..."
+        loadingFallback={<ProductDetailsSkeleton />}
       >
         {pageContent}
       </AsyncState>

@@ -4,6 +4,7 @@ import ProductCard from '../../components/ProductCard/ProductCard'
 import SearchBar from '../../components/SearchBar/SearchBar'
 import EmailValidation from '../../components/Common/EmailValidation/EmailValidation'
 import AsyncState from '../../components/Common/AsyncState/AsyncState'
+import { ProductListSkeleton } from '../../components/Common/ContentSkeleton/ContentSkeleton'
 import { PRODUCTS_PER_PAGE } from '../../utils/constants'
 import { useProducts } from '../../hooks/useProducts'
 import './ProductList.css'
@@ -90,6 +91,7 @@ export default function ProductList() {
         error={error}
         retry={retry}
         loadingMessage="Loading products..."
+        loadingFallback={<ProductListSkeleton />}
       >
         {pageContent}
       </AsyncState>

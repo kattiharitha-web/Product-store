@@ -1,0 +1,24 @@
+.skeletonBlock { display: block; border-radius: 6px; background: linear-gradient(90deg, #eceae5 25%, #f5f4f0 50%, #eceae5 75%); background-size: 200% 100%; animation: skeletonShimmer 1.4s ease-in-out infinite; }
+.skeletonStatus { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.skeletonResults { width: 180px; height: 16px; margin-bottom: 12px; }
+.skeletonProductGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.skeletonProductCard { overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-surface); box-shadow: var(--shadow); }
+.skeletonProductImage { height: 210px; border-radius: 0; }
+.skeletonProductBody { padding: 16px 17px 18px; }
+.skeletonCategory { width: 35%; height: 11px; margin-bottom: 12px; }
+.skeletonTitle { width: 100%; height: 14px; margin-bottom: 8px; }
+.skeletonTitleShort { width: 70%; margin-bottom: 16px; }
+.skeletonPrice { width: 34%; height: 14px; }
+.productDetailsSkeleton { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; padding: 24px; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-surface); }
+.skeletonDetailsImage { min-height: 320px; }
+.skeletonDetailsBody { padding-top: 6px; }
+.skeletonDetailsTitle { width: 100%; height: 36px; margin-bottom: 10px; }
+.skeletonDetailsTitleShort { width: 68%; margin-bottom: 22px; }
+.skeletonDetailsPrice { width: 22%; height: 24px; margin-bottom: 36px; }
+.skeletonDescription { width: 100%; height: 16px; margin-bottom: 11px; }
+.skeletonDescriptionShort { width: 76%; }
+@keyframes skeletonShimmer { to { background-position: -200% 0; } }
+@media (max-width: 900px) { .skeletonProductGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .productDetailsSkeleton { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .skeletonProductGrid { grid-template-columns: 1fr; } .skeletonProductImage { height: 230px; } }
+@media (prefers-reduced-motion: reduce) { .skeletonBlock { animation: none; } }

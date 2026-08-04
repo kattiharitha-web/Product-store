@@ -34,7 +34,7 @@ src/
 
 `Page -> useProducts/useProduct -> API service -> Fake Store API`
 
-The request hook owns loading, error, retry, and cancellation behaviour. `AsyncState` then maps that state to consistent loading or error UI, keeping page components focused on their success content.
+The request hook owns loading, error, retry, and cancellation behaviour. `ProductState` then maps that state to consistent loading or error UI, keeping page components focused on their success content.
 
 ## Accessibility
 

@@ -15,7 +15,10 @@ describe('SearchBar', () => {
 
     expect(onSearch).toHaveBeenLastCalledWith('jacket')
 
-    await user.click(screen.getByRole('button', { name: 'Clear search' }))
+    const clearButton = screen.getByRole('button', { name: 'Clear search' })
+    expect(clearButton).toHaveTextContent('Clear search')
+
+    await user.click(clearButton)
 
     expect(input).toHaveValue('')
     expect(input).toHaveFocus()

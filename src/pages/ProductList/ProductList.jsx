@@ -3,8 +3,8 @@ import Pagination from '../../components/Pagination/Pagination'
 import ProductCard from '../../components/ProductCard/ProductCard'
 import SearchBar from '../../components/SearchBar/SearchBar'
 import EmailValidation from '../../components/Common/EmailValidation/EmailValidation'
-import AsyncState from '../../components/Common/AsyncState/AsyncState'
-import { ProductListSkeleton } from '../../components/Common/ContentSkeleton/ContentSkeleton'
+import ProductState from '../../components/Common/ProductState/ProductState'
+import ProductListSkeleton from './ProductListSkeleton/ProductListSkeleton'
 import { PRODUCTS_PER_PAGE } from '../../utils/constants'
 import { useProducts } from '../../hooks/useProducts'
 import './ProductList.css'
@@ -86,7 +86,7 @@ export default function ProductList() {
 
       <SearchBar onSearch={handleSearch} />
 
-      <AsyncState
+      <ProductState
         loading={loading}
         error={error}
         retry={retry}
@@ -94,7 +94,7 @@ export default function ProductList() {
         loadingFallback={<ProductListSkeleton />}
       >
         {pageContent}
-      </AsyncState>
+      </ProductState>
 
       <EmailValidation />
     </main>

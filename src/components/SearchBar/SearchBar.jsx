@@ -31,7 +31,8 @@ export default function SearchBar({ onSearch }) {
         <input
           id="product-search"
           ref={inputRef}
-          type="search"
+          type="text"
+          role="searchbox"
           value={value}
           placeholder="Search by product name or category..."
           onChange={handleChange}
@@ -40,7 +41,7 @@ export default function SearchBar({ onSearch }) {
         />
         {value && (
           <button type="button" onClick={handleClear} className="searchBarClear" aria-label="Clear search">
-            Clear
+            Clear search
           </button>
         )}
       </div>

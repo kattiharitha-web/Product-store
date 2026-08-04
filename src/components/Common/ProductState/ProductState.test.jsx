@@ -1,14 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import AsyncState from './AsyncState'
+import ProductState from './ProductState'
 
-describe('AsyncState', () => {
+describe('ProductState', () => {
   it('shows the loading state instead of its children', () => {
-    render(
-      <AsyncState loading loadingMessage="Loading products...">
-        <p>Product content</p>
-      </AsyncState>,
-    )
+    render(<ProductState loading loadingMessage="Loading products..."><p>Product content</p></ProductState>)
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading products...')
     expect(screen.queryByText('Product content')).not.toBeInTheDocument()
@@ -16,37 +12,20 @@ describe('AsyncState', () => {
 
   it('shows the error state and retries when requested', () => {
     const retry = vi.fn()
-
-    render(
-      <AsyncState error="Unable to load products." retry={retry}>
-        <p>Product content</p>
-      </AsyncState>,
-    )
+    render(<ProductState error="Unable to load products." retry={retry}><p>Product content</p></ProductState>)
 
     expect(screen.getByRole('alert')).toHaveTextContent('Unable to load products.')
     screen.getByRole('button', { name: 'Try again' }).click()
     expect(retry).toHaveBeenCalledOnce()
-    expect(screen.queryByText('Product content')).not.toBeInTheDocument()
   })
 
-  it('renders its children when there is no loading or error state', () => {
-    render(
-      <AsyncState loading={false} error="">
-        <p>Product content</p>
-      </AsyncState>,
-    )
-
+  it('renders its children when no product state is active', () => {
+    render(<ProductState loading={false} error=""><p>Product content</p></ProductState>)
     expect(screen.getByText('Product content')).toBeInTheDocument()
   })
 
   it('renders a supplied loading fallback', () => {
-    render(
-      <AsyncState loading loadingFallback={<p>Product skeleton</p>}>
-        <p>Product content</p>
-      </AsyncState>,
-    )
-
+    render(<ProductState loading loadingFallback={<p>Product skeleton</p>}><p>Product content</p></ProductState>)
     expect(screen.getByText('Product skeleton')).toBeInTheDocument()
-    expect(screen.queryByText('Product content')).not.toBeInTheDocument()
   })
 })

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import AsyncState from '../../components/Common/AsyncState/AsyncState'
-import { ProductDetailsSkeleton } from '../../components/Common/ContentSkeleton/ContentSkeleton'
+import ProductState from '../../components/Common/ProductState/ProductState'
+import ProductDetailsSkeleton from './ProductDetailsSkeleton/ProductDetailsSkeleton'
 import { ROUTES } from '../../routes/routes'
 import { useProduct } from '../../hooks/useProducts'
 import { formatCurrency } from '../../utils/helpers'
@@ -53,7 +53,7 @@ export default function ProductDetails() {
         &larr; Back to products
       </Link>
 
-      <AsyncState
+      <ProductState
         loading={loading}
         error={error}
         retry={retry}
@@ -61,7 +61,7 @@ export default function ProductDetails() {
         loadingFallback={<ProductDetailsSkeleton />}
       >
         {pageContent}
-      </AsyncState>
+      </ProductState>
     </main>
   )
 }

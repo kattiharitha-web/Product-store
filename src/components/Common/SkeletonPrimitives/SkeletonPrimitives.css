@@ -1,0 +1,4 @@
+.skeletonBlock { display: block; border-radius: 6px; background: linear-gradient(90deg, #eceae5 25%, #f5f4f0 50%, #eceae5 75%); background-size: 200% 100%; animation: skeletonShimmer 1.4s ease-in-out infinite; }
+.skeletonStatus { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+@keyframes skeletonShimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .skeletonBlock { animation: none; } }

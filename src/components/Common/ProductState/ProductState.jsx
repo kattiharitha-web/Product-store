@@ -1,6 +1,6 @@
 import PageState from '../PageState/PageState'
 
-export default function AsyncState({ loading, error, retry, loadingMessage, loadingFallback, children }) {
+export default function ProductState({ loading, error, retry, loadingMessage, loadingFallback, children }) {
   if (loading) {
     return loadingFallback || <PageState type="loading" message={loadingMessage} />
   }

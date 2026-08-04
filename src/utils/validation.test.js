@@ -11,6 +11,18 @@ describe('validation utilities', () => {
     expect(validateEmail('not-an-email')).toBe(emailValidationMessages.invalid)
   })
 
+  it.each([
+    'user@example.com123',
+    'user@example.c0m',
+    'user@example.1n',
+    'user@example.c',
+    'user@example.mk',
+    'user@example.us',
+    'user@example.in',
+  ])('rejects an email with an invalid domain extension: %s', (email) => {
+    expect(validateEmail(email)).toBe(emailValidationMessages.invalid)
+  })
+
   it('accepts a valid email address', () => {
     expect(validateEmail('user@example.com')).toBe('')
   })

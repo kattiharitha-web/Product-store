@@ -4,7 +4,8 @@ export const emailValidationMessages = {
   success: 'Email format is valid. This demo does not store your email.',
 }
 
-export const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// This form accepts only `.com` email addresses.
+export const emailPattern = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.com$/i
 
 export function validateEmail(value) {
   const email = value?.trim() ?? ''
